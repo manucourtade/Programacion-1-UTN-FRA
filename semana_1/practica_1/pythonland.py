@@ -41,7 +41,7 @@ Cual atraccion desea usar?
                     continue
             case 'carrusel':   # Si el visitante tiene menos de 6 años, solo puede subir al Carrusel.
                 contador += 1        
-                atraccion_elegida += '-Carrusel ✅\n'
+                atraccion_elegida += 'Carrusel ✅\n'   
                 acumulador += 800
     
     
