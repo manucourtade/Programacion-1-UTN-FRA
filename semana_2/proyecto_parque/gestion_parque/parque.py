@@ -27,7 +27,7 @@ def calcular_precio(atraccion: str) -> int:
 
 def calc_descuento(cant_atracciones: int, total: int) -> int:
     if cant_atracciones >= 3:
-        return int(total * 0.9)  # 10% descuento
+        return int(total * 0.9)  
     return total
 
 
@@ -51,7 +51,7 @@ def registrar_visita():
             print(f"✅ {nombre} puede subir a {atraccion}")
         else:
             print(f"❌ {nombre} no cumple con la edad mínima para {atraccion}")
-
+            
         seguir = input("¿Desea usar otra atracción? (si/no): ").lower()
         if seguir == "no":
             break
