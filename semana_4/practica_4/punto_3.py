@@ -9,6 +9,6 @@ suma_array = 0
 
 for k in array_floats:
     suma_array += k
-    promedio = suma_array / len(array_floats)
+promedio = suma_array / len(array_floats)
 
 print(f'Promedio del array: {promedio:.2f}')
