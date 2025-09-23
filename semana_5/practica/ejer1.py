@@ -24,8 +24,8 @@ def promedio_dia(mat):
         for j in range(len(mat[i])):
             acumulador += mat[i][j]
         promedio = acumulador / len(mat[i])
+        print(f'Promedio: {promedio:.2f}')
         
-    print(f'Promedio: {promedio:.2f}')
     
 
 def promedio_general(mat):
@@ -35,7 +35,7 @@ def promedio_general(mat):
             acumulador += mat[i][j]
         
         promedio = acumulador / len(mat[i])
-        print(f'Promedio general: {promedio:.2f}')
+    print(f'Promedio general: {promedio:.2f}')
 
 def menu(mat):
     salir = False
