@@ -2,7 +2,7 @@ datos = {
     'autores': ('Manuel Courtade', 'Maximo Savall'),
     'fecha': '31/10/2025',
     'materia': 'Programacion I',
-    'docentes': ('Martin Alejandro Garcia', 'Veronica'),
+    'docentes': ('Martin Alejandro Garcia', 'Veronica Carbonari'),
     'carrera': 'Tecnicatura en programacion',
     'contacto': ('courtademanuel@outlook.es', 'savallmaximo@gmail.com')
 }
