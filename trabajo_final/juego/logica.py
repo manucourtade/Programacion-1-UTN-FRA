@@ -60,6 +60,7 @@ def ronda(valores):
                     dados = dados_conservados
             print(f'TUS DADOS: {dados}')
             
+            
 
 
         cant_categorias -= 1

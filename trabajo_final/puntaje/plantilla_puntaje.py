@@ -18,4 +18,19 @@ def tabla_puntajes():
     print('-' * 30)
 
 
+def posibles_jugadas():
+    print('--- POSIBLES JUGADAS')
+    print('[1]: Unos       \t-> ')
+    print('[2]: Doses      \t-> ')
+    print('[3]: Treses     \t-> ')
+    print('[4]: Cuatros     \t-> ')
+    print('[5]: Cincos     \t-> ')
+    print('[6]: Seises     \t-> ')
+    print('[7]: Escalera(20)\t-> ')
+    print('[8]: Full(30)   \t-> ')
+    print('[9]: Poker(40)   \t-> ')
+    print('[10]: Generala(50)\t-> ')
+    
+    elegir_cat = input('Seleccione el numero de la categoria para anotar: ').split()
+    
 
