@@ -1,5 +1,5 @@
 from creditos.func_creditos import creditos, datos
-
+from juego.logica import ronda
 
 def mini_generala():
     while True:
@@ -15,7 +15,7 @@ def mini_generala():
         opcion = input('Ingrese una opcion => ')
 
         if opcion == '1':
-            pass
+            ronda()
         elif opcion == '2':
             pass
         elif opcion == '3':
