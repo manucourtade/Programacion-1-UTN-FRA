@@ -1,22 +1,27 @@
-
-
-def tabla_puntajes():
+def tabla_puntajes(puntajes):
     print('-' * 40)
     print('\t PLANTILLA DE PUNTAJES')
     print('-' * 40)
 
-    print('[1]: Unos       \t: ')
-    print('[2]: Doses      \t: ')
-    print('[3]: Treses     \t: ')
-    print('[4]: Cuatros     \t: ')
-    print('[5]: Cincos     \t: ')
-    print('[6]: Seises     \t: ')
-    print('[7]: Escalera(20)\t: ')
-    print('[8]: Full(30)   \t: ')
-    print('[9]: Poker(40)   \t: ')
-    print('[10]: Generala(50)\t: ')
+ 
+    print(f'[1]: Unos        \t: {puntajes[1]}')
+    print(f'[2]: Doses       \t: {puntajes[2]}')
+    print(f'[3]: Treses      \t: {puntajes[3]}')
+    print(f'[4]: Cuatros     \t: {puntajes[4]}')
+    print(f'[5]: Cincos      \t: {puntajes[5]}')
+    print(f'[6]: Seises      \t: {puntajes[6]}')
+    print(f'[7]: Escalera(20)\t: {puntajes[7]}')
+    print(f'[8]: Full(30)    \t: {puntajes[8]}')
+    print(f'[9]: Poker(40)   \t: {puntajes[9]}')
+    print(f'[10]: Generala(50)\t: {puntajes[10]}')
     print('-' * 30)
-    print('PUNTAJE TOTAL: ')
+
+    total = 0
+    for i in puntajes:
+        if puntajes[i] is not None:
+            total = total + puntajes[i]
+
+    print('PUNTAJE TOTAL:', total)
     print('-' * 30)
 
 
@@ -80,7 +85,7 @@ def jugada_poker(mis_dados):
 
 
 
-def jugada_generala(mis_dados,tiro):
+def jugada_generala(mis_dados):
     puntos = 0
     repeticiones = {}  
 
@@ -93,59 +98,55 @@ def jugada_generala(mis_dados,tiro):
 
     for cantidad in repeticiones.values():
         if cantidad == 5:
-                if tiro == 1:
+                if posibles_jugadas(mis_dados, 1):
                     print(" ¡Generala servida! ¡Ganaste automáticamente!")
                     puntos = 100
                 else:
                     puntos = 50
     return puntos
 
-
-def posibles_jugadas(mis_dados):
+def posibles_jugadas(mis_dados, puntajes):
     print('--- POSIBLES JUGADAS ---')
-    print('[1]: Unos       \t-> ')
-    print('[2]: Doses      \t-> ')
-    print('[3]: Treses     \t-> ')
-    print('[4]: Cuatros     \t-> ')
-    print('[5]: Cincos     \t-> ')
-    print('[6]: Seises     \t-> ')
-    print('[7]: Escalera(20)\t-> ')
-    print('[8]: Full(30)   \t-> ')
-    print('[9]: Poker(40)   \t-> ')
-    print('[10]: Generala(50)\t-> ')
 
-    elegir_cat = input('Seleccione el numero de la categoria para anotar: ').strip()
+    jugadas = {
+        1: jugada_uno_al_seis(mis_dados, 1),
+        2: jugada_uno_al_seis(mis_dados, 2),
+        3: jugada_uno_al_seis(mis_dados, 3),
+        4: jugada_uno_al_seis(mis_dados, 4),
+        5: jugada_uno_al_seis(mis_dados, 5),
+        6: jugada_uno_al_seis(mis_dados, 6),
+        7: jugada_escalera(mis_dados),
+        8: jugada_full(mis_dados),
+        9: jugada_poker(mis_dados),
+        10: jugada_generala(mis_dados)
+    }
 
-    if elegir_cat.isdigit():
-        elegir_cat = int(elegir_cat)
-    else:
-        print('Ingreso inválido')
-        return
-
-    if 1 <= elegir_cat <= 6:
-        puntos = jugada_uno_al_seis(mis_dados, elegir_cat)
-        print(f"Puntos para la categoría {elegir_cat}: {puntos}")
-
-    elif elegir_cat == 7:
-        puntos = jugada_escalera(mis_dados)
-        print(f"Puntos para Escalera: {puntos}")
-
-    elif elegir_cat == 8:
-        puntos = jugada_full(mis_dados)
-        print(f"Puntos para Full: {puntos}")
-
-    elif elegir_cat == 9:
-        puntos = jugada_poker(mis_dados)
-        print(f"Puntos para Póker: {puntos}")
-
-    elif elegir_cat == 10:
-        
-        puntos = jugada_generala(mis_dados, )
-        print(f"Puntos para Generala: {puntos}")
-
-    else:
-        print('Categoría inválida')
+    print(f'[1]: Unos        -> {jugadas[1]}')
+    print(f'[2]: Doses       -> {jugadas[2]}')
+    print(f'[3]: Treses      -> {jugadas[3]}')
+    print(f'[4]: Cuatros     -> {jugadas[4]}')
+    print(f'[5]: Cincos      -> {jugadas[5]}')
+    print(f'[6]: Seises      -> {jugadas[6]}')
+    print(f'[7]: Escalera    -> {jugadas[7]}')
+    print(f'[8]: Full        -> {jugadas[8]}')
+    print(f'[9]: Poker       -> {jugadas[9]}')
+    print(f'[10]: Generala   -> {jugadas[10]}')
 
 
-    
+    while True:
+        elegir_cat = input('Seleccione el número de la categoría para anotar: ').strip()
+        if elegir_cat.isdigit():
+            elegir_cat = int(elegir_cat)
+            if 1 <= elegir_cat <= 10:
+                if puntajes[elegir_cat] is None:
+                    puntos = jugadas[elegir_cat]
+                    print(f'\nAnotaste {puntos} puntos en la categoría {elegir_cat}.')
+                    return elegir_cat, puntos  
+                else:
+                    print('Esa categoría ya fue usada, elegí otra.')
+            else:
+                print('Número fuera de rango (1–10).')
+        else:
+            print('Ingreso inválido, escribí un número del 1 al 10.')
+
 
