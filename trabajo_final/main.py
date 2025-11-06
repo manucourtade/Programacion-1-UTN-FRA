@@ -1,5 +1,7 @@
 from creditos.func_creditos import creditos, datos
 from juego.logica import ronda
+from estadisticas.archivo_json_csv import leer_archivo_csv, archivo
+
 
 def mini_generala():
     while True:
@@ -17,7 +19,7 @@ def mini_generala():
         if opcion == '1':
             ronda()
         elif opcion == '2':
-            pass
+            leer_archivo_csv(archivo)
         elif opcion == '3':
             creditos(datos)
         elif opcion == '4':
@@ -27,3 +29,5 @@ def mini_generala():
             print('Opcion invalida intente de nuevo')
 
 mini_generala()
+
+
