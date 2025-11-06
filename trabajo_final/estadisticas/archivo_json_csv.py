@@ -1,7 +1,8 @@
 import os
+import json
 
 archivo = 'estadisticas/historial.csv'
-archivo_json = 'estadisticas/niveles.json'
+archivo_json = 'niveles.json'
 
 def realizar_registro(nombre_archivo, nombre, puntos):
     if not os.path.exists(nombre_archivo):
@@ -61,13 +62,45 @@ def ordenar_10_mejores(nombre_archivo):
         print(f'   {nombre:<10}|    {puntos:>7}')
     print("=" * 30)
 
-    
-
-
-
 
 def json_tematicas(nombre_archivo):
-    pass
+    simbolos = {
+    '1': 'Pikachu',
+    '2': 'Bulbasur',
+    '3': 'Charmander',
+    '4': 'Squirtle',
+    '5': 'Snorlax',
+    '6': 'Gengar',
+    'escalera': '(20 pts) Secuencia 1-2-3-4-5 o 2-3-4-5-6',
+    'full': '(30 pts) Tres dados iguales y otros dos iguales',
+    'poker': '(40 pts) Cuatro dados iguales',
+    'generala': '(50 pts) Cinco dados iguales. Si es servida (en el primer tiro), gana el juego automáticamente y suma 100 puntos'
+}
+    lista_personajes = []
+    lista_personajes.append(simbolos)
 
+    with open(nombre_archivo, 'w', encoding= 'utf-8') as niveles:
+        json.dump(lista_personajes, niveles, indent=4)
+    
+    print(f"Archivo '{nombre_archivo}' creado con éxito ")
+
+def json_background(nombre_archivo):
+    if not os.path.exists(nombre_archivo):
+        return [] 
+    
+    with open(nombre_archivo, "r", encoding="utf-8") as niveles:
+        lista_personajes = json.load(niveles) 
+    
+    return lista_personajes
+
+json_tematicas(archivo_json)
+
+def mostrar_archivo_json():
+    pokemones_categoria = json_background(archivo_json)
+    simbolos = pokemones_categoria[0]
+    for i, j in simbolos.items():
+        print(f'Valor: {i} - Simbolo {j}')
+
+mostrar_archivo_json()
 
 
