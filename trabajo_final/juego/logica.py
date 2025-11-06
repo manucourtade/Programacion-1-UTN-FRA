@@ -53,7 +53,7 @@ def ronda():
             puntos_generala = jugada_generala(dados, turno + 1)
 
             if puntos_generala == 100:  
-                print('\n🎉 ¡GENERALA SERVIDA! Fin del juego 🎉')
+                print('\n¡GENERALA SERVIDA! Fin del juego ')
                 puntos = 100
                 cant_categorias = 0
                 break
@@ -107,4 +107,3 @@ def ronda():
         
 
 
-     
