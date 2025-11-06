@@ -1,3 +1,5 @@
+
+
 def tabla_puntajes(puntajes):
     print('-' * 40)
     print('\t PLANTILLA DE PUNTAJES')
@@ -18,11 +20,12 @@ def tabla_puntajes(puntajes):
 
     total = 0
     for i in puntajes:
-        if puntajes[i] is not None:
+        if puntajes[i] != '--':
             total = total + puntajes[i]
 
     print('PUNTAJE TOTAL:', total)
     print('-' * 30)
+    return total
 
 
 def jugada_uno_al_seis(mis_dados, idx_categoria):
@@ -85,7 +88,7 @@ def jugada_poker(mis_dados):
 
 
 
-def jugada_generala(mis_dados):
+def jugada_generala(mis_dados, tiro):
     puntos = 0
     repeticiones = {}  
 
@@ -98,12 +101,13 @@ def jugada_generala(mis_dados):
 
     for cantidad in repeticiones.values():
         if cantidad == 5:
-                if posibles_jugadas(mis_dados, 1):
-                    print(" ¡Generala servida! ¡Ganaste automáticamente!")
-                    puntos = 100
-                else:
-                    puntos = 50
-    return puntos
+            if tiro == 1:
+                print(" ¡Generala servida! ¡Ganaste automáticamente!")
+                return 100
+            return 50
+            
+                
+    return 0
 
 def posibles_jugadas(mis_dados, puntajes):
     print('--- POSIBLES JUGADAS ---')
@@ -118,7 +122,7 @@ def posibles_jugadas(mis_dados, puntajes):
         7: jugada_escalera(mis_dados),
         8: jugada_full(mis_dados),
         9: jugada_poker(mis_dados),
-        10: jugada_generala(mis_dados)
+        10: jugada_generala(mis_dados, 3)
     }
 
     print(f'[1]: Unos        -> {jugadas[1]}')
@@ -138,7 +142,7 @@ def posibles_jugadas(mis_dados, puntajes):
         if elegir_cat.isdigit():
             elegir_cat = int(elegir_cat)
             if 1 <= elegir_cat <= 10:
-                if puntajes[elegir_cat] is None:
+                if puntajes[elegir_cat] == '--':
                     puntos = jugadas[elegir_cat]
                     print(f'\nAnotaste {puntos} puntos en la categoría {elegir_cat}.')
                     return elegir_cat, puntos  
