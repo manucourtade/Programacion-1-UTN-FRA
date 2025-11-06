@@ -19,7 +19,8 @@ def mini_generala():
         if opcion == '1':
             ronda()
         elif opcion == '2':
-            leer_archivo_csv(archivo)
+            estadisticas = leer_archivo_csv(archivo)
+            print(estadisticas)
         elif opcion == '3':
             creditos(datos)
         elif opcion == '4':
