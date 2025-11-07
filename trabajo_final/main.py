@@ -1,6 +1,6 @@
 from creditos.func_creditos import creditos, datos
 from juego.logica import ronda
-from estadisticas.archivo_json_csv import ordenar_10_mejores, archivo, historial
+from estadisticas.archivo_json_csv import ordenar_10_mejores, archivo
 
 
 def mini_generala():
@@ -10,10 +10,9 @@ def mini_generala():
         print('=' * 20)
 
         print('1. Jugar')
-        print('2. Estadisticas (10 Mejores)')
-        print('3. Historial total')
-        print('4. Creditos')
-        print('5. Salir')
+        print('2. Estadisticas')
+        print('3. Creditos')
+        print('4. Salir')
         
         opcion = input('Ingrese una opcion => ')
 
@@ -22,11 +21,8 @@ def mini_generala():
         elif opcion == '2':
             ordenar_10_mejores(archivo)
         elif opcion == '3':
-            historial_total = historial(archivo)
-            print(historial_total)
-        elif opcion == '4':
             creditos(datos)
-        elif opcion == '5':
+        elif opcion == '4':
             print('Gracias por jugar a nuestra generala! ')
             break
         else:
