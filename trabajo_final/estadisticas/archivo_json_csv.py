@@ -2,42 +2,35 @@ import os
 import json
 
 archivo = 'estadisticas/historial.csv'
-archivo_json = 'niveles.json'
+archivo_json = 'estadisticas/niveles.json'
+
 
 def realizar_registro(nombre_archivo, nombre, puntos):
+    # Si no existe, crear archivo con encabezado
     if not os.path.exists(nombre_archivo):
-        with open(nombre_archivo, 'w') as archivo:
-            archivo.write("=" * 30 + '\n    NOMBRE   |    PUNTAJE \n' + '=' * 30 +'\n')
-    with open(nombre_archivo, 'a') as archivo:
-        archivo.write(f'   {nombre.strip():<10}|    {puntos.strip():>7}\n')
+        with open(nombre_archivo, 'w', encoding='utf-8') as archivo:
+            archivo.write("nombre,puntaje\n")
 
-def historial(nombre_archivo):
-    if not os.path.exists(nombre_archivo):
-        print('NO HAS JUGADO NINGUNA PARTIDA TODAVIA!')
-        return
-    
-    with open(nombre_archivo, 'r') as archivo:
-        texto = archivo.read()
-    return texto
+    # Agregar una nueva línea con nombre y puntos
+    with open(nombre_archivo, 'a', encoding='utf-8') as archivo:
+        archivo.write(f"{nombre.strip()},{puntos}\n")
+
 
 def leer_archivo_csv(nombre_archivo):
     if not os.path.exists(nombre_archivo):
         print('NO HAS JUGADO NINGUNA PARTIDA TODAVÍA!')
-        return 
+        return []
 
-    with open(nombre_archivo, 'r') as archivo:
-        lineas = archivo.readlines()[3:] 
+    with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+        lineas = archivo.readlines()[1:]  # salta el encabezado
         puntajes = []
 
         for linea in lineas:
-            if '|' in linea:
-                partes = linea.strip().split('|')
-                nombre = partes[0].strip()
-                puntos = partes[1].strip()
-
+            partes = linea.strip().split(',')
+            if len(partes) == 2:
+                nombre, puntos = partes
                 if puntos.isdigit():
-                    puntos = int(puntos)
-                    puntajes.append((nombre, puntos))
+                    puntajes.append((nombre, int(puntos)))
 
     return puntajes
 
@@ -47,6 +40,7 @@ def ordenar_10_mejores(nombre_archivo):
     if not puntajes:
         return 
 
+    # Ordenar de mayor a menor puntaje
     n = len(puntajes)
     for i in range(n - 1):
         for j in range(n - i - 1):
@@ -93,7 +87,7 @@ def json_background(nombre_archivo):
     
     return lista_personajes
 
-json_tematicas(archivo_json)
+#json_tematicas(archivo_json)
 
 def mostrar_archivo_json():
     pokemones_categoria = json_background(archivo_json)
@@ -101,6 +95,6 @@ def mostrar_archivo_json():
     for i, j in simbolos.items():
         print(f'Valor: {i} - Simbolo {j}')
 
-mostrar_archivo_json()
+#mostrar_archivo_json()
 
 
