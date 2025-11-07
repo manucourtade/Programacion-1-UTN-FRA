@@ -9,6 +9,6 @@
         "escalera": "(20 pts) Secuencia 1-2-3-4-5 o 2-3-4-5-6",
         "full": "(30 pts) Tres dados iguales y otros dos iguales",
         "poker": "(40 pts) Cuatro dados iguales",
-        "generala": "(50 pts) Cinco dados iguales. Si es servida (en el primer tiro), gana el juego automaticamente y suma 100 puntos"
+        "generala": "(50 pts) Cinco dados iguales. Si es servida (en el primer tiro), gana el juego autom\u00e1ticamente y suma 100 puntos"
     }
 ]
