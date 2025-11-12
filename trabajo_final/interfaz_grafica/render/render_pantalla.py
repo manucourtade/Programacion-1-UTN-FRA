@@ -1,5 +1,5 @@
 import pygame
-from datos.constantes import ANCHO, COLOR_TEXTO_OSCURO, COLOR_SECUNDARIO, COLOR_TEXTO_CLARO
+from datos.constantes import WIDTH, COLOR_TEXTO_OSCURO, COLOR_SECUNDARIO, COLOR_TEXTO_CLARO
 from .render_elementos import logo_juego, fondo_menu, crear_boton_rect
 
 def pantalla_principal(pantalla):
@@ -8,7 +8,7 @@ def pantalla_principal(pantalla):
     
     ancho_logo = logo.get_width()
 
-    x_logo = (ANCHO - ancho_logo) // 2
+    x_logo = (WIDTH - ancho_logo) // 2
     y_logo = 10
 
     etiquetas = ["Jugar", "Opciones", "Créditos", "Estadísticas", "Salir"]
@@ -19,7 +19,7 @@ def pantalla_principal(pantalla):
     ESPACIO = 20
 
     total_ancho_botones = (ANCHO_BOTON  * 5) + (ESPACIO * 4)
-    inicio_botones_x = (ANCHO - total_ancho_botones) // 2
+    inicio_botones_x = (WIDTH - total_ancho_botones) // 2
     y_botones = y_logo + logo.get_height() - 20
     botones = []
     pantalla.blit(fondo, (0, 0))

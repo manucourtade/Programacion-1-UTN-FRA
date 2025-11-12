@@ -7,8 +7,8 @@ from eventos import nuestros_eventos
 
 pygame.init()
 
-pantalla = pygame.display.set_mode((con.ANCHO, con.ALTO))
-pygame.display.set_caption(con.TITULO)
+pantalla = pygame.display.set_mode((con.WIDTH, con.HEIGHT))
+pygame.display.set_caption(con.TITLE)
 reloj = pygame.time.Clock()
 FPS = 60
 pantalla_actual = "menu"
@@ -22,16 +22,13 @@ while ejecutando:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             ejecutando = False
-        else:
-            pantalla_actual = nuestros_eventos(evento, pantalla_actual, botones)
-        
+
     # Lógica de juego
     if pantalla_actual == "menu":
         if musica_actual != "menu":
             reproducir_musica(MUSICA_PRINCIPAL)
             musica_actual = "menu"
         botones = pantalla_principal(pantalla)
-
     elif pantalla_actual == "jugar":
         botones = None
     elif pantalla_actual == "opciones":

@@ -1,11 +1,11 @@
 import pygame
-from datos.constantes import ANCHO, ALTO
+from datos.constantes import HEIGHT, WIDTH
 
 LOGO = pygame.image.load("assets/logo.png")
 LOGO = pygame.transform.scale(LOGO, (500, 500))
 
-FONDO = pygame.image.load("assets/efecto-zoom-fondo-gradiente_23-2149722799.jpg")
-FONDO = pygame.transform.scale(FONDO, (ANCHO, ALTO))
+FONDO = pygame.image.load("assets/pokemonfondo.jpg")
+FONDO = pygame.transform.scale(FONDO, (WIDTH, HEIGHT))
 
 def logo_juego():
     return LOGO
