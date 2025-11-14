@@ -1,8 +1,8 @@
 import pygame
-VOLUMEN = 0.07
+VOLUMEN = 0.03
 
-MUSICA_PRINCIPAL = "audio/intro.mp3"
-EFECTO_CLICK = "audio/boton_principal.wav"
+MUSICA_PRINCIPAL = "assets/musica_pokemon.mp3"
+EFECTO_CLICK = "assets/pokemon_boton.wav"
 
 VOLUMEN_MUSICA = VOLUMEN
 
