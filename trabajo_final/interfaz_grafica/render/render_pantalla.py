@@ -46,3 +46,4 @@ def pantalla_opciones(pantalla):
     texto = fuente.render("PANTALLA DE OPCIONES", True, (COLOR_TEXTO_CLARO))
     pantalla.blit(texto, (100, 100))
     return []
+

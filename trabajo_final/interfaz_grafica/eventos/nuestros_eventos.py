@@ -1,6 +1,7 @@
 import pygame
 from audio.musica import cargar_efecto, reproducir_efecto, EFECTO_CLICK
 
+
 def gestionar_eventos(evento, pantalla_actual, botones):
     # Validamos que tengamos botones en pantalla:
     if botones is None:
@@ -8,7 +9,6 @@ def gestionar_eventos(evento, pantalla_actual, botones):
     
     if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
         pos = pygame.mouse.get_pos()
-        print(pos)
 
         for boton in botones:
             if boton["rect"].collidepoint(pos):

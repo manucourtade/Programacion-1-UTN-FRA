@@ -34,7 +34,7 @@ while ejecutando:
         botones = pantalla_principal(pantalla)
 
     elif pantalla_actual == "jugar":
-        botones = None
+        pass
     elif pantalla_actual == "opciones":
         botones = pantalla_opciones(pantalla)
     elif pantalla_actual == "creditos":
@@ -42,7 +42,7 @@ while ejecutando:
     elif pantalla_actual == "estadisticas":
         botones = None
     elif pantalla_actual == "salir":
-        pass
+        ejecutando = False
     
     # Actualización de pantalla
     pygame.display.flip()
