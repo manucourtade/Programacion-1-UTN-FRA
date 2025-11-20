@@ -43,39 +43,32 @@ def pantalla_principal(pantalla):
 
     return botones
 
+def volver_menu(pantalla):
+    fuente_esc = pygame.font.Font(None, 35)
+    texto_esc = fuente_esc.render("Presione ESC para volver al menu", True, (255, 255, 255))
+    pantalla.blit(texto_esc, (20, 20))
 
+
+    for evento in pygame.event.get():
+        if evento.type == pygame.KEYDOWN: 
+            if evento.key == pygame.K_ESCAPE: 
+                pantalla_actual = "menu"
+    return {}
 
 def pantalla_opciones(pantalla):
     pantalla.fill((40, 40, 40))
     fuente = pygame.font.Font(None, 70)
     texto = fuente.render("PANTALLA DE OPCIONES", True, (COLOR_TEXTO_CLARO))
     pantalla.blit(texto, (100, 100))
-    return {}
-
-
-datos = {
-    'autores': ('Manuel Courtade', 'Maximo Savall'),
-    'fecha': '31/10/2025',
-    'materia': 'Programacion I',
-    'docentes': ('Martin Alejandro Garcia', 'Veronica Carbonari'),
-    'carrera': 'Tecnicatura en programacion',
-    'contacto': ('courtademanuel@outlook.es', 'savallmaximo@gmail.com')
-}
-
-
+    volver_menu(pantalla)
 
 def pantalla_creditos(pantalla):
     fondo2 = fondo_creditos()
     pantalla.blit(fondo2, (0, 0))
 
-
     fuente = pygame.font.Font(None, 65)
     texto = fuente.render("CREDITOS", True, (COLOR_TEXTO_CLARO)) 
     pantalla.blit(texto, (330, 80))
-
-    fuente_esc = pygame.font.Font(None, 35)
-    texto_esc = fuente_esc.render("Presione ESC para volver al menu", True, (255, 255, 255))
-    pantalla.blit(texto_esc, (20, 20))
 
     fuente_autores = pygame.font.Font(None, 35)
     txt_autores = fuente_autores.render('Manuel Courtade, Maximo Savall', True, (0, 0, 0))
@@ -101,29 +94,11 @@ def pantalla_creditos(pantalla):
     txt_contacto = fuente_contacto.render('courtademanuel@outlook.es - savallmaximo@gmail.com', True, (0, 0, 0))
     pantalla.blit(txt_contacto, (120, 385))
 
-    for evento in pygame.event.get():
-        if evento.type == pygame.KEYDOWN: 
-            if evento.key == pygame.K_ESCAPE: 
-                pantalla_actual = "menu"
-
-    return {}
-
-def pantalla_jugar(pantalla):
-    pantalla.fill((0, 0, 0))
-
-    fuente = pygame.font.Font(None, 60)
-    txt = fuente.render("Pantalla de JUEGO", True, (255, 255, 255))
-    pantalla.blit(txt, (100, 100))
-
-    fuente2 = pygame.font.Font(None, 35)
-    txt2 = fuente2.render("Presione ESC para volver al menú", True, (200, 200, 200))
-    pantalla.blit(txt2, (50, 50))
-
-    return {}   # no usa botones
+    volver_menu(pantalla)
 
 def pantalla_estadisticas(pantalla):
     pantalla.fill((40, 40, 40))
     fuente = pygame.font.Font(None, 70)
     texto = fuente.render("PANTALLA DE ESTADISTICAS", True, (COLOR_TEXTO_CLARO))
     pantalla.blit(texto, (100, 100))
-    return {}
+    volver_menu(pantalla)
