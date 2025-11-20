@@ -1,10 +1,8 @@
 import pygame
-VOLUMEN = 0.03
+from datos.constantes import VOLUMEN
 
 MUSICA_PRINCIPAL = "assets/musica_pokemon.mp3"
 EFECTO_CLICK = "assets/pokemon_boton.wav"
-
-VOLUMEN_MUSICA = VOLUMEN
 
 def reproducir_musica(ruta, loop=True):
     pygame.mixer.music.load(ruta)
@@ -29,7 +27,7 @@ def cambiar_volumen(valor):
 def cargar_efecto(ruta):
     pygame.mixer.init()
     efecto = pygame.mixer.Sound(ruta)
-    efecto.set_volume(VOLUMEN_MUSICA + 0.2)
+    efecto.set_volume(VOLUMEN + 0.7)
     return efecto
 
 def reproducir_efecto(efecto):
