@@ -1,7 +1,6 @@
 import pygame
 import random
 
-# Tu lógica original
 from puntaje.plantilla_puntaje import tabla_puntajes, posibles_jugadas, jugada_generala
 from estadisticas.archivo_json_csv import realizar_registro, archivo
 
@@ -12,10 +11,8 @@ ALTO = 600
 PANTALLA = pygame.display.set_mode((ANCHO, ALTO))
 FUENTE = pygame.font.SysFont(None, 36)
 
+# CARGAR IMÁGENES
 
-# ===============================================
-# CARGAR IMÁGENES (las que pasaste)
-# ===============================================
 imagenes = {
     1: pygame.image.load("assets/pikachu.png"),
     2: pygame.image.load("assets/bulbasur.png"),
@@ -26,13 +23,12 @@ imagenes = {
 }
 
 # Escalar todas
+
 for i in imagenes:
     imagenes[i] = pygame.transform.scale(imagenes[i], (120, 120))
 
-
-# ===============================================
 # FUNCIONES GRAFICAS SIMPLES
-# ===============================================
+
 def dibujar_texto(texto, x, y):
     t = FUENTE.render(texto, True, (255, 255, 255))
     PANTALLA.blit(t, (x, y))

@@ -1,8 +1,8 @@
 {
     "default": {
         "ventana": {
-            "w": 1000,
-            "h": 750,
+            "w": 900,
+            "h": 600,
             "titulo": "Generala GO!"
         },
         "audio": {

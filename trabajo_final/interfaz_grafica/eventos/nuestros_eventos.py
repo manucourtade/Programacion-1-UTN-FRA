@@ -2,35 +2,46 @@ import pygame
 from audio.musica import cargar_efecto, reproducir_efecto, EFECTO_CLICK
 
 
+efecto = cargar_efecto(EFECTO_CLICK)
+
 def gestionar_eventos(evento, pantalla_actual, botones):
-    # Validamos que tengamos botones en pantalla:
-    if botones is None:
-        return pantalla_actual
+    # Si estás en el menú
+    if pantalla_actual == "menu":
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+            if botones:
+                if botones["jugar"].collidepoint(evento.pos):
+                    reproducir_efecto(efecto)
+                    return "jugar"
+                if botones["opciones"].collidepoint(evento.pos):
+                    reproducir_efecto(efecto)
+                    return "opciones"
+                if botones["creditos"].collidepoint(evento.pos):
+                    reproducir_efecto(efecto)
+                    return "creditos"
+                if botones["estadisticas"].collidepoint(evento.pos):
+                    reproducir_efecto(efecto)
+                    return "estadisticas"
+                if botones["salir"].collidepoint(evento.pos):
+                    reproducir_efecto(efecto)
+                    return "salir"
+
+    # ✔ NUEVO: si estás en créditos y presionás ESC → volver al menú
+    if pantalla_actual == "creditos":
+        if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
+            return "menu"
+
+    # Podés agregar lo mismo en otras pantallas si querés que ESC vuelva al menú
+    if pantalla_actual == "opciones":
+        if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
+            return "menu"
     
-    if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
-        pos = pygame.mouse.get_pos()
+    if pantalla_actual == "jugar":
+        if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
+            return "menu"
+        
+    if pantalla_actual == "estadisticas":
+        if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
+            return "menu"
 
-        for boton in botones:
-            if boton["rect"].collidepoint(pos):
-                print("CLICK DETECTADO SOBRE: ", boton["accion"])
-                efecto = cargar_efecto(EFECTO_CLICK)
-                reproducir_efecto(efecto)
-                accion = boton["accion"]
 
-                if pantalla_actual == "menu":
-                    if accion == "jugar":
-                        return "jugar"
-                    
-                    if accion == "opciones":
-                        return "opciones"
-                    
-                    if accion == "estadisticas":
-                        return "estadisticas"
-                    
-                    if accion == "creditos":
-                        return "creditos"
-                    
-                    if accion == "salir":
-                        return "salir"
-                    
     return pantalla_actual

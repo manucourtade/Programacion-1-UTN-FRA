@@ -27,6 +27,7 @@ def cambiar_volumen(valor):
     pygame.mixer.music.set_volume(valor)
 
 def cargar_efecto(ruta):
+    pygame.mixer.init()
     efecto = pygame.mixer.Sound(ruta)
     efecto.set_volume(VOLUMEN_MUSICA + 0.2)
     return efecto
