@@ -10,7 +10,8 @@ def pantalla_jugar(pantalla):
     turnos_totales = 3
 
     fuente_cat = pygame.font.Font(None, 40)
-    fuente_turno = pygame.font.Font(None, 25)
+    fuente_turno = pygame.font.Font(None, 35)
+    fuente_fin = pygame.font.Font(None, 40)
 
     reloj = pygame.time.Clock()
     corriendo = True
@@ -33,9 +34,10 @@ def pantalla_jugar(pantalla):
                 
                 # Si no quedan categorías → fin
                 if cant_categorias == 0:
-                    print("¡Juego terminado!")
-                    return  # → vuelve al menú
-
+                    txt_fin = fuente_fin.render('Juego terminado!', True, (0, 0, 0))
+                    pantalla.blit(txt_fin, (550, 550))
+                    return
+                    
         # --- DIBUJADO ---
         pantalla.blit(fondo2, (0, 0))
 
@@ -51,7 +53,7 @@ def pantalla_jugar(pantalla):
 
         if volver_menu(pantalla):
             corriendo = False
+            return 'menu'
         
-
         pygame.display.update()
         reloj.tick(30)

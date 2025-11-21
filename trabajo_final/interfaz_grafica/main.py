@@ -36,7 +36,7 @@ while ejecutando:
         botones = pantalla_principal(pantalla)
         
     elif pantalla_actual == "jugar":
-        botones = pantalla_jugar(pantalla)
+        pantalla_actual = pantalla_jugar(pantalla)
     elif pantalla_actual == "opciones":
         botones = pantalla_opciones(pantalla)
     elif pantalla_actual == "creditos":

@@ -48,12 +48,13 @@ def volver_menu(pantalla):
     texto_esc = fuente_esc.render("Presione ESC para volver al menu", True, (255, 255, 255))
     pantalla.blit(texto_esc, (20, 20))
 
+    # Detectar la tecla ESC (sin consumir eventos)
+    teclas = pygame.key.get_pressed()
+    if teclas[pygame.K_ESCAPE]:
+        return True
 
-    for evento in pygame.event.get():
-        if evento.type == pygame.KEYDOWN: 
-            if evento.key == pygame.K_ESCAPE: 
-                pantalla_actual = "menu"
-    return {}
+    return False
+
 
 def pantalla_opciones(pantalla):
     pantalla.fill((40, 40, 40))
