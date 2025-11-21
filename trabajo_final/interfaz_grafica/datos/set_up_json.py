@@ -7,7 +7,7 @@ json_archive = os.path.join(BASE_DIR, "set_up.json")
 
 config__ = {
     'default': {
-        'ventana': {'w': 1000, 'h': 750, 'titulo': 'Generala GO!'},
+        'ventana': {'w': 1280, 'h': 720, 'titulo': 'Generala GO!'},
         'audio': {'vol': 0.03},
         'colores': {
             'fondo': [196, 101, 86],

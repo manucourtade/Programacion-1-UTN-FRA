@@ -1,6 +1,5 @@
 import pygame
 from audio.musica import cargar_efecto, reproducir_efecto, EFECTO_CLICK
-from render.render_pantalla import volver_menu
 
 efecto = cargar_efecto(EFECTO_CLICK)
 
