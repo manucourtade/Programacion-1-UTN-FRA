@@ -1,8 +1,9 @@
 import pygame
-import random
 from render.render_pantalla import fondo_creditos, volver_menu
-from puntaje.plantilla_puntaje import jugada_generala, posibles_jugadas, tabla_puntajes
+from puntaje.plantilla_puntaje import jugada_generala
 from juego.logica import tirar_dado
+from render.render_elementos import crear_boton_rect
+from datos.constantes import WIDTH,HEIGHT
 
 imagen_dado_1 = pygame.image.load("assets/pikachu.png")
 imagen_dado_2 = pygame.image.load("assets/bulbasur.png")
@@ -24,15 +25,32 @@ for i in range(len(pokemon_imagenes)):
     pokemon_imagenes[i] = pygame.transform.scale(pokemon_imagenes[i], (250, 250))
 
 
+def boton_tirar_dados(pant):
+    x = WIDTH - 200
+    y = HEIGHT - 100
+    texto = "Tirar dados"
+
+    rect = crear_boton_rect(
+        pant,
+        x, y,
+        160,
+        60,
+        texto,
+        (255, 215, 0),
+        (255, 255, 255)
+    )
+    return rect
+
+
 def pantalla_jugar(pantalla):
+
     fondo2 = fondo_creditos()
 
-    # Datos de la ronda
     cant_categorias = 10
     turno_actual = 1
     turnos_totales = 3
 
-    dados = []   # almacena los 5 dados actuales
+    dados = []
 
     fuente = pygame.font.Font(None, 40)
     fuente_fin = pygame.font.Font(None, 50)
@@ -46,48 +64,46 @@ def pantalla_jugar(pantalla):
                 pygame.quit()
                 exit()
 
-            # ESPACIO = tirar dados
-            if evento.type == pygame.KEYDOWN and evento.key == pygame.K_SPACE:
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if rect_boton_tirar.collidepoint(evento.pos):
 
-                dados = []  
-                tirar_dado(dados)   # ← CORRECTO, ANTES ESTABA MAL
+                    dados = []
+                    tirar_dado(dados)
 
-                # Evaluar generala
-                puntos_generala = jugada_generala(dados, turno_actual)
+                    puntos_generala = jugada_generala(dados, turno_actual)
 
-                if puntos_generala == 100:
-                    pantalla.blit(
-                        fuente_fin.render("¡GENERALA SERVIDA! Fin del juego", True, (0, 0, 0)),
-                        (200, 400)
-                    )
-                    pygame.display.update()
-                    pygame.time.wait(2000)
-                    return "menu"
+                    if puntos_generala == 100:
+                        pantalla.blit(
+                            fuente_fin.render("¡GENERALA SERVIDA! Fin del juego", True, (0, 0, 0)),
+                            (200, 400)
+                        )
+                        pygame.display.update()
+                        pygame.time.wait(2000)
+                        return "menu"
 
-                if puntos_generala == 50:
-                    print("Generala normal (+50 puntos)")
+                    if puntos_generala == 50:
+                        print("Generala normal (+50 puntos)")
 
-                # Avanzar turno
-                turno_actual += 1
+                    turno_actual += 1
 
-                if turno_actual > turnos_totales:
-                    turno_actual = 1
-                    cant_categorias -= 1
+                    if turno_actual > turnos_totales:
+                        turno_actual = 1
+                        cant_categorias -= 1
 
-                # Si no quedan categorías → fin
-                if cant_categorias == 0:
-                    pantalla.blit(
-                        fuente_fin.render("¡Juego terminado!", True, (0, 0, 0)),
-                        (300, 400)
-                    )
-                    pygame.display.update()
-                    pygame.time.wait(2000)
-                    return "menu"
+                    if cant_categorias == 0:
+                        pantalla.blit(
+                            fuente_fin.render("¡Juego terminado!", True, (0, 0, 0)),
+                            (300, 400)
+                        )
+                        pygame.display.update()
+                        pygame.time.wait(2000)
+                        return "menu"
 
-        # --- DIBUJAR ---
         pantalla.blit(fondo2, (0, 0))
 
-        # Texto superior
+        # ⬅ REDIBUJAR EL BOTÓN SIEMPRE
+        rect_boton_tirar = boton_tirar_dados(pantalla)
+
         texto_cat = fuente.render(f"Categorías restantes: {cant_categorias}", True, (0, 0, 0))
         pantalla.blit(texto_cat, (20, 70))
 
@@ -98,7 +114,6 @@ def pantalla_jugar(pantalla):
         y_base = 250
 
         for i, valor in enumerate(dados):
-
             imagen = pokemon_imagenes[valor - 1]
             x = x_base + i * 250
             pantalla.blit(imagen, (x, y_base))
