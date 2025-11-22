@@ -1,6 +1,7 @@
 import pygame
+import random
 from render.render_pantalla import fondo_creditos, volver_menu
-from puntaje.plantilla_puntaje import jugada_generala
+from puntaje.plantilla_puntaje import jugada_generala, jugada_uno_al_seis, jugada_full, jugada_poker, jugada_escalera
 from juego.logica import tirar_dado
 from render.render_elementos import crear_boton_rect
 from datos.constantes import WIDTH,HEIGHT
@@ -24,6 +25,9 @@ pokemon_imagenes = [
 for i in range(len(pokemon_imagenes)):
     pokemon_imagenes[i] = pygame.transform.scale(pokemon_imagenes[i], (250, 250))
 
+def tirar_un_dado():
+    return random.randint(1, 6)
+
 
 def boton_tirar_dados(pant):
     x = WIDTH - 200
@@ -41,82 +45,205 @@ def boton_tirar_dados(pant):
     )
     return rect
 
+puntajes = {
+    'Pikachu (1)': None,          # Unos
+    'Bulbasur (2)': None,         # Doses
+    'Charmander (3)': None,       # Treses
+    'Squirtle (4)': None,         # Cuatros
+    'Snorlax (5)': None,          # Cincos
+    'Gengar (6)': None,           # Seises
+    'Evolucion (20)': None,        # Escalera
+    'Triple combo (30)': None,     # Full
+    'Fuerza Cuadruple (40)': None, # Poker
+    'Legendario (50 | 100)': None        # Generala
+}
 
-def pantalla_jugar(pantalla):
+def elegir_categoria_interfaz(pantalla, jugadas, puntajes):
+    mapa_categorias = {
+        "Pikachu (1)": 1,
+        "Bulbasur (2)": 2,
+        "Charmander (3)": 3,
+        "Squirtle (4)": 4,
+        "Snorlax (5)": 5,
+        "Gengar (6)": 6,
+        "Evolucion (20)": 7,
+        "Triple combo (30)": 8,
+        "Fuerza Cuadruple (40)": 9,
+        "Legendario (50 | 100)": 10
+    }
 
-    fondo2 = fondo_creditos()
-
-    cant_categorias = 10
-    turno_actual = 1
-    turnos_totales = 3
-
-    dados = []
+    fondo = fondo_creditos()
+    pantalla.blit(fondo, (0, 0))
 
     fuente = pygame.font.Font(None, 40)
-    fuente_fin = pygame.font.Font(None, 50)
 
-    reloj = pygame.time.Clock()
-    corriendo = True
+    inicio_x = 100
+    inicio_y = 100
+    separacion = 60
+    rectangulos = []
 
-    while corriendo:
+    # Puntaje total actual
+    total_puntos = puntaje_total(puntajes)
+
+    categorias = list(puntajes.keys())
+
+    for idx, categoria in enumerate(categorias):
+        y = inicio_y + idx * separacion
+
+        if puntajes[categoria] is None:
+            color = (0, 255, 0)
+            puntos_posibles = jugadas[mapa_categorias[categoria]]
+            texto = f"{categoria} → {puntos_posibles} pts"
+        else:
+            color = (255, 0, 0)
+            texto = f"{categoria} → YA USADA"
+
+        rect = pygame.Rect(inicio_x, y, 520, 50)
+        pygame.draw.rect(pantalla, color, rect)
+
+        rendered = fuente.render(texto, True, (0, 0, 0))
+        pantalla.blit(rendered, (inicio_x + 10, y + 10))
+
+        rectangulos.append((rect, categoria))
+
+    # Mostrar el total abajo
+    texto_total = fuente.render(f"Puntaje total: {total_puntos}", True, (255, 255, 255))
+    pantalla.blit(texto_total, (inicio_x, inicio_y + separacion * len(categorias) + 50))
+
+    pygame.display.update()
+
+    # Esperar selección
+    while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 pygame.quit()
                 exit()
 
             if evento.type == pygame.MOUSEBUTTONDOWN:
+                x, y = evento.pos
+                for rect, categoria in rectangulos:
+                    if rect.collidepoint(x, y):
+                        if puntajes[categoria] is None:
+                            idx = mapa_categorias[categoria]
+                            return categoria, jugadas[idx]
+                        else:
+                            print("Categoría ya usada")
+
+
+
+def puntaje_total(puntajes):
+    total = 0
+    for clave in puntajes:
+        if puntajes[clave] is not None:
+            total += puntajes[clave]
+    return total
+
+
+
+def pantalla_jugar(pantalla):
+
+    fondo = fondo_creditos()
+
+    cant_categorias = 10
+    turno_actual = 1
+    turnos_totales = 3
+
+    # Primeros dados
+    dados = [tirar_un_dado() for _ in range(5)]
+    dados_bloqueados = [False] * 5
+
+    fuente = pygame.font.Font(None, 40)
+    fuente_fin = pygame.font.Font(None, 50)
+    reloj = pygame.time.Clock()
+
+    corriendo = True
+    while corriendo:
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+
+                # --- BOTÓN TIRAR ---
                 if rect_boton_tirar.collidepoint(evento.pos):
 
-                    dados = []
-                    tirar_dado(dados)
+                    # Tirar solo los desbloqueados
+                    for i in range(5):
+                        if not dados_bloqueados[i]:
+                            dados[i] = tirar_un_dado()
 
+                    # Generala
                     puntos_generala = jugada_generala(dados, turno_actual)
 
                     if puntos_generala == 100:
-                        pantalla.blit(
-                            fuente_fin.render("¡GENERALA SERVIDA! Fin del juego", True, (0, 0, 0)),
-                            (200, 400)
-                        )
+                        mensaje = fuente_fin.render("¡GENERALA SERVIDA!", True, (255, 255, 255))
+                        pantalla.blit(mensaje, ((1280 - mensaje.get_width()) // 2, 660))
                         pygame.display.update()
-                        pygame.time.wait(2000)
+                        pygame.time.wait(2500)
                         return "menu"
-
-                    if puntos_generala == 50:
-                        print("Generala normal (+50 puntos)")
 
                     turno_actual += 1
 
+                    # Ya gastó los 3 tiros → elegir categoría
                     if turno_actual > turnos_totales:
-                        turno_actual = 1
+
+                        jugadas = {
+                            1: jugada_uno_al_seis(dados, 1),
+                            2: jugada_uno_al_seis(dados, 2),
+                            3: jugada_uno_al_seis(dados, 3),
+                            4: jugada_uno_al_seis(dados, 4),
+                            5: jugada_uno_al_seis(dados, 5),
+                            6: jugada_uno_al_seis(dados, 6),
+                            7: jugada_escalera(dados),
+                            8: jugada_full(dados),
+                            9: jugada_poker(dados),
+                            10: jugada_generala(dados, 3),
+                        }
+
+                        categoria, puntos = elegir_categoria_interfaz(pantalla, jugadas, puntajes)
+                        puntajes[categoria] = puntos
+
                         cant_categorias -= 1
+                        turno_actual = 1
 
-                    if cant_categorias == 0:
-                        pantalla.blit(
-                            fuente_fin.render("¡Juego terminado!", True, (0, 0, 0)),
-                            (300, 400)
-                        )
-                        pygame.display.update()
-                        pygame.time.wait(2000)
-                        return "menu"
+                        # Reset total
+                        dados = [tirar_un_dado() for _ in range(5)]
+                        dados_bloqueados = [False] * 5
 
-        pantalla.blit(fondo2, (0, 0))
+                        if cant_categorias == 0:
+                            total = puntaje_total(puntajes)
+                            mensaje = fuente_fin.render(f"PUNTAJE FINAL: {total}", True, (255, 255, 255))
+                            pantalla.blit(mensaje, ((1280 - mensaje.get_width()) // 2, 670))
+                            pygame.display.update()
+                            pygame.time.wait(3500)
+                            return "menu"
 
-        # ⬅ REDIBUJAR EL BOTÓN SIEMPRE
+                # --- CLICK PARA BLOQUEAR DADOS ---
+                x, y = evento.pos
+                for i in range(5):
+                    rect_dado = pygame.Rect(10 + i * 250, 250, 250, 250)
+                    if rect_dado.collidepoint(x, y):
+                        dados_bloqueados[i] = not dados_bloqueados[i]
+
+        # -------------------- RENDER --------------------
+        pantalla.blit(fondo, (0, 0))
+
+        # Botón tirar
         rect_boton_tirar = boton_tirar_dados(pantalla)
 
-        texto_cat = fuente.render(f"Categorías restantes: {cant_categorias}", True, (0, 0, 0))
-        pantalla.blit(texto_cat, (20, 70))
+        pantalla.blit(fuente.render(f"Categorías restantes: {cant_categorias}", True, (0, 0, 0)), (20, 70))
+        pantalla.blit(fuente.render(f"Tiro: {turno_actual} de {turnos_totales}", True, (0, 0, 0)), (20, 120))
 
-        texto_turno = fuente.render(f"Tiro actual: {turno_actual} de {turnos_totales}", True, (80, 80, 80))
-        pantalla.blit(texto_turno, (20, 120))
-
-        x_base = 10
-        y_base = 250
-
+        # Mostrar dados
         for i, valor in enumerate(dados):
-            imagen = pokemon_imagenes[valor - 1]
-            x = x_base + i * 250
-            pantalla.blit(imagen, (x, y_base))
+            img = pokemon_imagenes[valor - 1]
+            x = 10 + i * 250
+            pantalla.blit(img, (x, 250))
+
+            if dados_bloqueados[i]:
+                pygame.draw.rect(pantalla, (255, 0, 0), (x, 250, 250, 250), 5)
 
         if volver_menu(pantalla):
             return "menu"
