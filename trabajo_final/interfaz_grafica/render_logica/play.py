@@ -309,10 +309,8 @@ def pantalla_jugar(pantalla):
             if dados_bloqueados[i]:
                 pygame.draw.rect(pantalla, (255, 0, 0), (x, 250, 250, 250), 5)
 
-       
-
         if volver_menu(pantalla):
             return "menu"
 
         pygame.display.update()
-        reloj.tick(30)
+        reloj.tick(60)
