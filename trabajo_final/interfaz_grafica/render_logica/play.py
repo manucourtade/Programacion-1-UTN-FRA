@@ -2,7 +2,7 @@ import pygame
 import random
 from render.render_pantalla import fondo_creditos, volver_menu
 from puntaje.plantilla_puntaje import jugada_generala, jugada_uno_al_seis, jugada_full, jugada_poker, jugada_escalera
-from juego.logica import tirar_dado
+from estadisticas.archivo_json_csv import realizar_registro, archivo
 from render.render_elementos import crear_boton_rect
 from datos.constantes import WIDTH,HEIGHT
 
@@ -27,6 +27,70 @@ for i in range(len(pokemon_imagenes)):
 
 def tirar_un_dado():
     return random.randint(1, 6)
+
+def solicitar_nombre(pantalla, puntaje_total):
+    fondo = fondo_creditos()
+    fuente_titulo = pygame.font.Font(None, 60)
+    fuente_texto = pygame.font.Font(None, 45)
+    fuente_input = pygame.font.Font(None, 50)
+
+    nombre = ""
+    activo = True
+    clock = pygame.time.Clock()
+
+    while activo:
+        pantalla.blit(fondo, (0, 0))
+
+        # TÍTULO
+        txt_titulo = fuente_titulo.render("¡Partida terminada!", True, (0, 0, 0))
+        pantalla.blit(txt_titulo, (30, 200))
+
+        # PUNTAJE
+        txt_puntaje = fuente_texto.render(f"Tu puntaje total es: {puntaje_total}", True, (0, 0, 0))
+        pantalla.blit(txt_puntaje, (30, 260))
+
+        # PEDIR NOMBRE
+        txt_pedir_nombre = fuente_texto.render("Ingrese su nombre para anotar:", True, (0, 0, 0))
+        pantalla.blit(txt_pedir_nombre, (30, 330))
+
+        # CAJA
+        pygame.draw.rect(pantalla, (255, 255, 255), (30, 380, 500, 60))
+        pygame.draw.rect(pantalla, (0, 0, 0), (30, 380, 500, 60), 3)
+
+        txt_nombre = fuente_input.render(nombre, True, (0, 0, 0))
+        pantalla.blit(txt_nombre, (40, 390))
+
+        pygame.display.update()
+
+        # EVENTOS
+        for evento in pygame.event.get():
+
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if evento.type == pygame.KEYDOWN:
+
+                # Enter → confirmar nombre
+                if evento.key == pygame.K_RETURN:
+                    if len(nombre.strip()) > 0:
+                        activo = False  # ← salimos del bucle
+                        break
+
+                # Borrar un carácter
+                elif evento.key == pygame.K_BACKSPACE:
+                    nombre = nombre[:-1]
+
+                else:
+                    # Agregar texto normal
+                    if len(nombre) < 18:
+                        nombre += evento.unicode
+
+        clock.tick(30)
+
+    return nombre  # ← AHORA ESTÁ BIEN UBICADO
+
+
 
 
 def boton_tirar_dados(pant):
@@ -214,11 +278,11 @@ def pantalla_jugar(pantalla):
 
                         if cant_categorias == 0:
                             total = puntaje_total(puntajes)
-                            mensaje = fuente_fin.render(f"PUNTAJE FINAL: {total}", True, (255, 255, 255))
-                            pantalla.blit(mensaje, ((1280 - mensaje.get_width()) // 2, 670))
-                            pygame.display.update()
-                            pygame.time.wait(3500)
+                            nombre = solicitar_nombre(pantalla, total)
+                            total_puntos = str(total)
+                            realizar_registro(archivo, nombre, total_puntos)
                             return "menu"
+                        
 
                 # --- CLICK PARA BLOQUEAR DADOS ---
                 x, y = evento.pos
@@ -244,6 +308,8 @@ def pantalla_jugar(pantalla):
 
             if dados_bloqueados[i]:
                 pygame.draw.rect(pantalla, (255, 0, 0), (x, 250, 250, 250), 5)
+
+       
 
         if volver_menu(pantalla):
             return "menu"
